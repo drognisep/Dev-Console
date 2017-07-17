@@ -6,6 +6,5 @@ A collection of (fairly) common use utilities in one GUI window
 - File to byte array conversion
 
 ### Future features
-- Simple task list
 - CSV viewer/editor
-- XML viewer/editor
+- Binary file view, like old CMD debug
