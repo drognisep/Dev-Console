@@ -40,6 +40,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import java.awt.Toolkit;
+import javax.swing.BoxLayout;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
+import javax.swing.JTable;
 
 public class App {
 
@@ -51,6 +57,10 @@ public class App {
 	private static final String HEX_FORMAT = "0x%02x";
 	private JTextArea fileOutputTextArea;
 	private JTextArea stringOutputTextArea;
+	private JTable csvTable;
+	private JScrollPane csvTableScrollPane;
+	private JPanel csvPanel;
+	private JLabel csvStatusLabel = new JLabel("Status: Nothing Open");
 
 	/**
 	 * Launch the application.
@@ -299,6 +309,62 @@ public class App {
 		fileOutputTextArea.setWrapStyleWord(true);
 		fileOutputTextArea.setLineWrap(true);
 		scrollPane.setViewportView(fileOutputTextArea);
+		
+		csvPanel = new JPanel();
+		tabbedPane.addTab("CSV Editor", null, csvPanel, null);
+		csvPanel.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel = new JPanel();
+		csvPanel.add(panel, BorderLayout.NORTH);
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		JMenuBar menuBar_1 = new JMenuBar();
+		panel.add(menuBar_1);
+		
+		JMenu mnFile = new JMenu("File");
+		menuBar_1.add(mnFile);
+		
+		JMenuItem mntmNew = new JMenuItem("New");
+		mntmNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setCsvTable(new JTable(20,10));
+			}
+		});
+		mntmNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
+		mnFile.add(mntmNew);
+		
+		JMenuItem mntmOpen = new JMenuItem("Open...");
+		mntmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
+		mnFile.add(mntmOpen);
+		
+		JMenuItem mntmSave = new JMenuItem("Save");
+		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
+		mnFile.add(mntmSave);
+		
+		JMenuItem mntmSaveAs = new JMenuItem("Save As...");
+		mntmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
+		mnFile.add(mntmSaveAs);
+		
+		csvTableScrollPane = new JScrollPane();
+		csvPanel.add(csvTableScrollPane, BorderLayout.CENTER);
+		JPanel csvStatusPanel = new JPanel();
+		csvPanel.add(csvStatusPanel, BorderLayout.PAGE_END);
+		csvStatusPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		
+		csvStatusPanel.add(csvStatusLabel);
+		
+//		setCsvTable(new JTable());
+	}
+
+	private void setCsvTable(JTable table) {
+		EventQueue.invokeLater(() -> {
+			csvPanel.remove(csvTableScrollPane);
+			csvTable = table;
+			csvTableScrollPane = new JScrollPane(csvTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			csvTable.setFillsViewportHeight(true);
+			csvPanel.add(csvTableScrollPane, BorderLayout.CENTER);
+			csvStatusLabel.setText("Status: New CSV file");
+		});
 	}
 
 	public static final void showExceptionPopup(Exception ex) {
