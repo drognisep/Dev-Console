@@ -13,6 +13,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -240,6 +241,15 @@ public class App {
 		});
 		
 		JButton btnFileBrowse = new JButton("Browse");
+		btnFileBrowse.addActionListener(new ActionListener() {
+			JFileChooser fc = new JFileChooser();
+			public void actionPerformed(ActionEvent e) {
+				int choice = fc.showOpenDialog(frmDevutils);
+				if(choice == JFileChooser.APPROVE_OPTION) {
+					fileInputTextField.setText(fc.getSelectedFile().getAbsolutePath());
+				}
+			}
+		});
 		btnFileBrowse.setBounds(558, 35, 89, 23);
 		fileSelectPanel.add(btnFileBrowse);
 		
