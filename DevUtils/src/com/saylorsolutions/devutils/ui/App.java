@@ -38,6 +38,7 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
+import java.awt.Toolkit;
 
 public class App {
 
@@ -78,6 +79,7 @@ public class App {
 	 */
 	private void initialize() {
 		frmDevutils = new JFrame();
+		frmDevutils.setIconImage(Toolkit.getDefaultToolkit().getImage(App.class.getResource("/com/saylorsolutions/devutils/resources/favicon.png")));
 		frmDevutils.setResizable(false);
 		frmDevutils.setTitle("DevUtils");
 		frmDevutils.setBounds(100, 100, 670, 450);
